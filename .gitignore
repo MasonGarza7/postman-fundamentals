@@ -1,0 +1,17 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# Newman output reports (if generated)
+newman/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor settings
+.vscode/
+.idea/
+
+# Any local environment overrides with real credentials
+environments/*.local.json

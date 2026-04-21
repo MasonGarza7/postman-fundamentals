@@ -1,0 +1,350 @@
+{
+  "info": {
+    "_postman_id": "2925ca8b-156b-4359-b6ca-80e5edb3ea3d",
+    "name": "My Collection",
+    "description": "### Welcome to Postman! This is your first collection.\n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests  \n• Test your API in real-world scenarios  \n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54121277",
+    "_collection_link": "https://go.postman.co/collection/54121277-2925ca8b-156b-4359-b6ca-80e5edb3ea3d?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "301 - Status Code Bug Documentation",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Test 1: Confirm the status code is actually 301",
+              "pm.test(\"Status code is 301 (not redirecting as expected)\", function () {",
+              "    pm.response.to.have.status(301);",
+              "});",
+              "",
+              "// Test 2: Confirm the Location header is missing (the broken part)",
+              "pm.test(\"Location header is missing — known bug\", function () {",
+              "    const locationHeader = pm.response.headers.get(\"Location\");",
+              "    pm.expect(locationHeader).to.be.undefined;",
+              "});",
+              "",
+              "// Test 3: Confirm a body was returned (unusual for a redirect)",
+              "pm.test(\"Response has a body despite being a redirect — known bug\", function () {",
+              "    pm.expect(pm.response.text()).to.include(\"This page returned a 301 status code\");",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://the-internet.herokuapp.com/status_codes/301",
+          "protocol": "https",
+          "host": [
+            "the-internet",
+            "herokuapp",
+            "com"
+          ],
+          "path": [
+            "status_codes",
+            "301"
+          ]
+        },
+        "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+      },
+      "response": []
+    },
+    {
+      "name": "Basic Auth - Happy Path",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200 OK\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"No WWW-Authenticate header on success\", function () {\r",
+              "    pm.expect(pm.response.headers.get(\"WWW-Authenticate\")).to.be.undefined;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response contains success message\", function () {\r",
+              "    pm.expect(pm.response.text()).to.include(\"Congratulations\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "admin",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "admin",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/basic_auth",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "basic_auth"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Basic Auth - Unathorized",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 401 Unauthorized\", function () {\r",
+              "    pm.response.to.have.status(401);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"WWW-Authenticate header present on failure\", function () {\r",
+              "    pm.expect(pm.response.headers.get(\"WWW-Authenticate\")).to.include(\"Basic realm\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "wrongpassword",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "admin",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/basic_auth",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "basic_auth"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Form Auth - Happy Path",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Login success message present\", function () {\r",
+              "    pm.expect(pm.response.text()).to.include(\"You logged into a secure area!\");\r",
+              "});\r",
+              "\r",
+              "const sessionCookie = pm.cookies.get(\"rack.session\");\r",
+              "pm.collectionVariables.set(\"sessionCookie\", sessionCookie.trim().replace(/\\s/g, ''));"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "username",
+              "value": "{{username}}",
+              "type": "text",
+              "uuid": "4eb84e7c-6fff-413b-807a-fec965b29aca"
+            },
+            {
+              "key": "password",
+              "value": "{{password}}",
+              "type": "text",
+              "uuid": "4277d178-6b8d-4ca8-940b-055800d3fcb2"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/authenticate",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "authenticate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Form Auth - Unauthorized",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Error message present in body\", function () {\r",
+              "    pm.expect(pm.response.text()).to.include(\"Your password is invalid!\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Success message is NOT present\", function () {\r",
+              "    pm.expect(pm.response.text()).to.not.include(\"You logged into a secure area!\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "username",
+              "value": "{{username}}",
+              "type": "text",
+              "uuid": "4eb84e7c-6fff-413b-807a-fec965b29aca"
+            },
+            {
+              "key": "password",
+              "value": "wrongpassword",
+              "type": "text",
+              "uuid": "4277d178-6b8d-4ca8-940b-055800d3fcb2"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/authenticate",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "authenticate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Secure Area Request",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Secure area accessible with session cookie\", function () {\r",
+              "    pm.expect(pm.response.text()).to.include(\"Welcome to the Secure Area\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Session cookie was used\", function () {\r",
+              "    pm.expect(pm.request.headers.get(\"Cookie\")).to.include(\"rack.session\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/secure",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "secure"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "sessionCookie",
+      "value": ""
+    }
+  ]
+}

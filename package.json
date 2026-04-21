@@ -1,0 +1,14 @@
+{
+  "name": "postman-fundamentals",
+  "version": "1.0.0",
+  "description": "Postman testing suites covering HTTP fundamentals, authentication, CRUD operations, schema validation, an data-driven testing with Newman CLI integration",
+  "scripts": {
+    "test:internet": "newman run collections/the-internet-collection.json -e environments/the-internet-dev.json",
+    "test:booker:ui": "newman run collections/restful-booker-ui-collection.json -e environments/restful-booker-dev.json",
+    "test:booker:data": "newman run collections/restful-booker-newman-collection.json -e environments/restful-booker-dev.json --iteration-data data/bookings.csv",
+    "test:all": "npm run test:internet && npm run test:booker:ui && npm run test:booker:data"
+  },
+  "devDependencies": {
+    "newman": "^6.0.0"
+  }
+}
