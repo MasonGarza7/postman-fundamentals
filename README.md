@@ -425,3 +425,30 @@ Body check    → status code alone is not enough, always check the body
 Chaining      → capture IDs/tokens from one response, use in the next
 Teardown      → always DELETE test data created during a run
 ```
+
+
+## What's Next
+
+Areas to explore to continue building API testing expertise:
+
+### Postman
+- **Mock servers**: simulate API endpoints before the backend is built, enabling frontend and test development in parallel
+- **Monitor scheduling**: run collections on a schedule (hourly, daily) and get alerted on failures without manual intervention
+- **Postman Flows**: visual workflow builder for complex multi-step API logic
+- **Auto Documentation**: explore Postman's automated API documentation features, generating web-viewable documentation from collections, including request details, headers, and code snippets, all while updated in real-time. 
+
+### API Testing Depth
+- **PATCH requests**: partial updates vs PUT full replacement; understanding when each is appropriate
+- **Negative testing**: systematically testing invalid inputs, missing fields, wrong data types, and boundary values
+- **Contract testing**: verifying an API's response structure matches what consumers expect, using tools like Pact
+- **OAuth 2.0**: industry-standard authorization flow used by most modern APIs (Google, GitHub, etc.)
+
+### Performance & CI/CD
+- **Newman HTML reports**: generating visual test reports using `newman-reporter-htmlextra`
+- **GitHub Actions integration**: automatically running Newman on every push or pull request
+- **k6 or Gatling**: dedicated performance/load testing tools that complement Postman for stress testing
+
+### Broader QA Skills
+- **REST Assured**: API testing in Java, common in enterprise QA roles
+- **Cypress or Playwright**: Combines UI and API testing with one of my test automation frameworks
+- **OpenAPI/Swagger**: reading and testing against API specifications
