@@ -1,6 +1,6 @@
 # Postman Fundamentals
 
-A Postman testing suites covering HTTP fundamentals, authentication, CRUD operations, schema validation, an data-driven testing with Newman CLI integration.
+A Postman testing suites covering HTTP fundamentals, authentication, CRUD operations, schema validation, and data-driven testing with Newman CLI integration.
 
 Built as a structured example project to develop and demonstrate proficiency in API testing for software quality assurance.
 
@@ -216,7 +216,7 @@ Used by Restful Booker for PUT and DELETE operations.
 
 ### CRUD Operations
 
-**CRUD** = Create, Read, Update, and Delete.tThese are the four fundamental data operations. Maps directly to HTTP methods:
+**CRUD** = Create, Read, Update, and Delete. These are the four fundamental data operations. Maps directly to HTTP methods:
 
 | Operation | Method | Restful Booker Endpoint |
 |-----------|--------|------------------------|
